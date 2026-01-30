@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Göz Hastalığı Karar Destek Sistemi</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Göz Hastalığı Karar Destek Sistemi</h1>
+    <p class="sub">
+      Fundus kamera görüntüsü yükleyin; sistem 10 sınıftan birini tahmin eder.
+    </p>
+
+    {% if not ready %}
+      <div class="alert warn">
+        Model hazır değil. Lütfen <code>app/models/model.pt</code> ve <code>app/models/labels.json</code> dosyalarını ekleyin.
+      </div>
+    {% endif %}
+
+    {% if error %}
+      <div class="alert err">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" class="card">
+      <label class="btn">
+        Görüntü Seç
+        <input type="file" name="file" accept="image/*" required>
+      </label>
+      <button type="submit" class="btn primary" {% if not ready %}disabled{% endif %}>Tahmin Et</button>
+    </form>
+
+    {% if top1 %}
+      <div class="card">
+        <h2>Sonuç</h2>
+        <p><b>Dosya:</b> {{ filename }}</p>
+        <p><b>Tahmin:</b> {{ top1[0] }} <span class="pill">{{ "%.2f"|format(top1[1]*100) }}%</span></p>
+
+        <h3>Olasılıklar</h3>
+        <table>
+          <thead><tr><th>Sınıf</th><th>Olasılık</th></tr></thead>
+          <tbody>
+          {% for lab, p in ranked %}
+            <tr><td>{{ lab }}</td><td>{{ "%.4f"|format(p) }}</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+
+        <p class="note">
+          Bu sistem karar destek amaçlıdır; klinik tanı yerine geçmez.
+        </p>
+      </div>
+    {% endif %}
+
+    <footer>
+      <small>PyTorch + Flask | Repo: eye_disease_kds</small>
+    </footer>
+  </div>
+</body>
+</html>
