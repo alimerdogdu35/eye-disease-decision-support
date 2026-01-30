@@ -78,20 +78,9 @@ flask run --host 0.0.0.0 --port 5000
 
 Tarayıcı: `http://localhost:5000`
 
-## 7) GitHub’a koyma
-Bu repo hazır şekilde `git init` ile commit’lenip GitHub’a push edilebilir:
 
-```bash
-git init
-git add .
-git commit -m "Eye disease DSS (PyTorch + Flask)"
-git branch -M main
-git remote add origin <YOUR_GITHUB_REPO_URL>
-git push -u origin main
-```
-
-## 8) Lisans / Atıf
-Veri seti lisansı CC BY 4.0 (Mendeley). Lütfen raporda DOI ve atıf verin.
+## 7) Lisans / Atıf
+Veri seti lisansı CC BY 4.0 (Mendeley).
 
 ---
 
